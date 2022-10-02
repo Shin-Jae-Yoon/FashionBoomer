@@ -53,6 +53,7 @@ public class MemberMapperImpl implements MemberMapper {
 
         long memberId = 0L;
         String email = null;
+        String password = null;
         String name = null;
         String phone = null;
         Member.MemberStatus memberStatus = null;
@@ -61,11 +62,12 @@ public class MemberMapperImpl implements MemberMapper {
             memberId = member.getMemberId();
         }
         email = member.getEmail();
-        name = member.getname();
+        password = member.getPassword();
+        name = member.getName();
         phone = member.getPhone();
         memberStatus = member.getMemberStatus();
 
-        MemberDto.Response response = new MemberDto.Response( memberId, email, name, phone, memberStatus );
+        MemberDto.Response response = new MemberDto.Response( memberId, email, password, name, phone, memberStatus );
 
         return response;
     }

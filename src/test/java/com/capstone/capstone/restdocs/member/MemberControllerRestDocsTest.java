@@ -54,6 +54,7 @@ public class MemberControllerRestDocsTest {
 
         MemberDto.Response responseDto = new MemberDto.Response(1L,
                 "hgd@gmail.com",
+                "1234",
                 "홍길동",
                 "010-1234-5678",
                 Member.MemberStatus.MEMBER_ACTIVE);
@@ -77,6 +78,7 @@ public class MemberControllerRestDocsTest {
         actions
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data.email").value(post.getEmail()))
+                .andExpect(jsonPath("$.data.password").value(post.getPassword()))
                 .andExpect(jsonPath("$.data.name").value(post.getName()))
                 .andExpect(jsonPath("$.data.phone").value(post.getPhone()))
                 .andDo(document(
@@ -86,6 +88,7 @@ public class MemberControllerRestDocsTest {
                         requestFields(
                                 List.of(
                                         fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                                        fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
                                         fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
                                         fieldWithPath("phone").type(JsonFieldType.STRING).description("휴대폰 번호")
                                 )
@@ -95,6 +98,7 @@ public class MemberControllerRestDocsTest {
                                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
                                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+                                        fieldWithPath("data.password").type(JsonFieldType.STRING).description("비밀번호"),
                                         fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
                                         fieldWithPath("data.phone").type(JsonFieldType.STRING).description("휴대폰 번호"),
                                         fieldWithPath("data.memberStatus").type(JsonFieldType.STRING).description("회원 상태")
