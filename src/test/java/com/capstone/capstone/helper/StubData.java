@@ -19,7 +19,7 @@ public class StubData {
         stubRequestBody = new HashMap<>();
         stubRequestBody.put(HttpMethod.POST, new MemberDto.Post("hgd@gmail.com", "1234", "홍길동",
                 "010-1111-1111"));
-        stubRequestBody.put(HttpMethod.PATCH, new MemberDto.Patch(0, null, "010-2222-2222", null));
+        stubRequestBody.put(HttpMethod.PATCH, new MemberDto.Patch(0, "1234",null, "010-2222-2222", null));
     }
 
     public static class MockMember {

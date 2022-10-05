@@ -4,11 +4,13 @@ import com.capstone.capstone.member.entity.Member;
 import com.capstone.capstone.validator.NotSpace;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 
 public class MemberDto {
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class Post {
         @NotBlank
@@ -27,9 +29,13 @@ public class MemberDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class Patch {
         private long memberId;
+
+        @NotBlank
+        private String password;
 
         @NotSpace(message = "회원 이름은 공백이 아니어야 합니다")
         private String name;
@@ -48,10 +54,12 @@ public class MemberDto {
     }
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     public static class Response {
         private long memberId;
         private String email;
+        private String password;
         private String name;
         private String phone;
         private Member.MemberStatus memberStatus;
