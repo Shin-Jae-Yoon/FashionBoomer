@@ -9,41 +9,11 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-10-02T00:04:48+0900",
+    date = "2022-10-04T17:27:49+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 13.0.1 (Oracle Corporation)"
 )
 @Component
 public class MemberMapperImpl implements MemberMapper {
-
-    @Override
-    public Member memberPostToMember(MemberDto.Post requestBody) {
-        if ( requestBody == null ) {
-            return null;
-        }
-
-        Member member = new Member();
-
-        member.setEmail( requestBody.getEmail() );
-        member.setPassword( requestBody.getPassword() );
-        member.setPhone( requestBody.getPhone() );
-
-        return member;
-    }
-
-    @Override
-    public Member memberPatchToMember(MemberDto.Patch requestBody) {
-        if ( requestBody == null ) {
-            return null;
-        }
-
-        Member member = new Member();
-
-        member.setMemberId( requestBody.getMemberId() );
-        member.setPhone( requestBody.getPhone() );
-        member.setMemberStatus( requestBody.getMemberStatus() );
-
-        return member;
-    }
 
     @Override
     public MemberDto.Response memberToMemberResponse(Member member) {
@@ -53,21 +23,13 @@ public class MemberMapperImpl implements MemberMapper {
 
         long memberId = 0L;
         String email = null;
-        String password = null;
-        String name = null;
-        String phone = null;
-        Member.MemberStatus memberStatus = null;
 
         if ( member.getMemberId() != null ) {
             memberId = member.getMemberId();
         }
         email = member.getEmail();
-        password = member.getPassword();
-        name = member.getName();
-        phone = member.getPhone();
-        memberStatus = member.getMemberStatus();
 
-        MemberDto.Response response = new MemberDto.Response( memberId, email, password, name, phone, memberStatus );
+        MemberDto.Response response = new MemberDto.Response( memberId, email );
 
         return response;
     }
