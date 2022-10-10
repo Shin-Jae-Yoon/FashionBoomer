@@ -51,7 +51,7 @@ server:
       force-response: true
 mail:
   address:
-    admin: admin@gmail.com
+    admin: kjh42447@gmail.com
 jwt:
   key:
     secret: ${JWT_SECRET_KEY}

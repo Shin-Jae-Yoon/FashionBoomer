@@ -1,4 +1,4 @@
-package com.capstone.capstone.login.google.utils;
+package com.capstone.capstone.login.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// 권한 정보 생성
 @Component
 public class CustomAuthorityUtils {
     @Value("${mail.address.admin}")

@@ -1,7 +1,7 @@
-package com.capstone.capstone.login.google.auth.filter;
+package com.capstone.capstone.login.auth.filter;
 
-import com.capstone.capstone.login.google.jwt.JwtTokenizer;
-import com.capstone.capstone.login.google.utils.CustomAuthorityUtils;
+import com.capstone.capstone.login.jwt.JwtTokenizer;
+import com.capstone.capstone.login.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+// OAuth 2 인증에 성공하면 Frontend 애플리케이션 쪽에서 request를 전송할 때 마다 Authorization header에 실어 보내는 Access Token에 대한 검증을 수행하는 Filter
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;

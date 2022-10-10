@@ -1,4 +1,4 @@
-package com.capstone.capstone.login.google.utils;
+package com.capstone.capstone.login.utils;
 
 import com.capstone.capstone.response.ErrorResponse;
 import com.google.gson.Gson;

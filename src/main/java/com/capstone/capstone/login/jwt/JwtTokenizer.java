@@ -1,4 +1,4 @@
-package com.capstone.capstone.login.google.jwt;
+package com.capstone.capstone.login.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+// JWT를 생성하고 JWT를 검증
 @Component
 public class JwtTokenizer {
     @Getter

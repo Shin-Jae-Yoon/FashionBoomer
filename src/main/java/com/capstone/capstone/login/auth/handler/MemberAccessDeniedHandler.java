@@ -1,6 +1,6 @@
-package com.capstone.capstone.login.google.auth.handler;
+package com.capstone.capstone.login.auth.handler;
 
-import com.capstone.capstone.login.google.utils.ErrorResponder;
+import com.capstone.capstone.login.utils.ErrorResponder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;

@@ -1,15 +1,14 @@
-package com.capstone.capstone.login.google.config;
+package com.capstone.capstone.login.config;
 
-import com.capstone.capstone.login.google.auth.filter.JwtVerificationFilter;
-import com.capstone.capstone.login.google.auth.handler.MemberAccessDeniedHandler;
-import com.capstone.capstone.login.google.auth.handler.MemberAuthenticationEntryPoint;
-import com.capstone.capstone.login.google.auth.handler.OAuth2MemberSuccessHandler;
-import com.capstone.capstone.login.google.jwt.JwtTokenizer;
-import com.capstone.capstone.login.google.utils.CustomAuthorityUtils;
+import com.capstone.capstone.login.auth.filter.JwtVerificationFilter;
+import com.capstone.capstone.login.auth.handler.MemberAccessDeniedHandler;
+import com.capstone.capstone.login.auth.handler.MemberAuthenticationEntryPoint;
+import com.capstone.capstone.login.auth.handler.OAuth2MemberSuccessHandler;
+import com.capstone.capstone.login.jwt.JwtTokenizer;
+import com.capstone.capstone.login.utils.CustomAuthorityUtils;
 import com.capstone.capstone.member.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -51,7 +50,7 @@ public class SecurityConfiguration {
                 .authenticationEntryPoint(new MemberAuthenticationEntryPoint())  // 추가
                 .accessDeniedHandler(new MemberAccessDeniedHandler())            // 추가
                 .and()
-                .apply(new CustomFilterConfigurer())  // 추가
+                .apply(new CustomFilterConfigurer())  // CustomFilterConfigurer 추가
                 .and()
                 .authorizeHttpRequests(authorize -> authorize // url authorization 전체 추가
 //                        .antMatchers(HttpMethod.POST, "/*/members").permitAll()    // OAuth 2로 로그인하므로 회원 정보 등록 필요 없음.
@@ -62,7 +61,7 @@ public class SecurityConfiguration {
                                 .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService))  // (1)
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberService))  //
                 );
 
         return http.build();
@@ -78,13 +77,13 @@ public class SecurityConfiguration {
         return source;
     }
 
-    // 추가
+    // JwtVerificationFilter를 등록
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 
-            builder.addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class); // (2)
+            builder.addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }
     }
 }
