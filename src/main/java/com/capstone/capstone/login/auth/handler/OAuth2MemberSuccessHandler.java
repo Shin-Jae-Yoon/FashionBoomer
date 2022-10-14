@@ -7,6 +7,7 @@ import com.capstone.capstone.login.utils.CustomAuthorityUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 // OAuth2인증 후, JWT 생성 및 프론트로 JWT 전달
+@Service
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
@@ -37,13 +39,29 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        var oAuth2User = (OAuth2User)authentication.getPrincipal();
-        String email = String.valueOf(oAuth2User.getAttributes().get("email"));
-        System.out.println("Email : " + email);
-        List<String> authorities = authorityUtils.createRoles(email);           // CustomAuthorityUtils 를 이용해 권한 정보 생성
+        String registrationId = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
 
-        saveMember(email);
-        redirect(request, response, email, authorities);  // 프론트에 리다이렉트
+//        google
+        if(registrationId.equals("google")) {
+            var oAuth2User = (OAuth2User)authentication.getPrincipal();
+            String email = String.valueOf(oAuth2User.getAttributes().get("email"));
+            List<String> authorities = authorityUtils.createRoles(email);           // CustomAuthorityUtils 를 이용해 권한 정보 생성
+
+            saveMember(email);
+            redirect(request, response, email, authorities);  // 프론트에 리다이렉트
+        }
+
+//        kakao
+        else if(registrationId.equals("kakao")) {
+            var oAuth2User = (OAuth2User)authentication.getPrincipal();
+            Map<String, Object> attributes = oAuth2User.getAttributes();
+            Map<String, Object> kakao_account = (Map<String, Object>)attributes.get("kakao_account");
+            String email = String.valueOf(kakao_account.get("email"));
+            List<String> authorities = authorityUtils.createRoles(email);           // CustomAuthorityUtils 를 이용해 권한 정보 생성
+
+            saveMember(email);
+            redirect(request, response, email, authorities);  // 프론트에 리다이렉트
+        }
     }
 
     private void saveMember(String email) {
@@ -59,7 +77,6 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
 //        String uri = createURI(accessToken, refreshToken).toString();
         String uri = createURI(username, accessToken, refreshToken).toString();
-        System.out.println("UserName :" + username);
         getRedirectStrategy().sendRedirect(request, response, uri);   //  SimpleUrlAuthenticationSuccessHandler 에서 제공하는 sendRedirect() 메서드를 이용해 프론트 쪽으로 리다이렉트
     }
 
@@ -99,7 +116,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost")
+                .host("fashionboomer")
 //                .port(80)
                 .path("/receive-token.html")
                 .queryParams(queryParams)
@@ -117,7 +134,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost")
+                .host("fashionboomer")
 //                .port(80)
                 .path("/receive-token.html")
                 .queryParams(queryParams)
