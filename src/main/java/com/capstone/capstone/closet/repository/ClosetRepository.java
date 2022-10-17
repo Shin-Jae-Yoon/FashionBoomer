@@ -12,6 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface ClosetRepository extends JpaRepository<Closet, Integer> {
-    @Query(value = "SELECT c FROM CLOSET c WHERE c.member.memberId = :id")
-    Page<Closet> findByMemberId(long id, PageRequest pageRequest);
+    List<Closet> findByMember_MemberId(long id);
+    Optional<Closet> findByMember_MemberIdAndCloth_Id(long member_id, int cloth_id);
 }
