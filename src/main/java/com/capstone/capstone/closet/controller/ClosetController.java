@@ -34,11 +34,14 @@ public class ClosetController {
 
     @PostMapping
     public ResponseEntity postCloset(@Valid @RequestBody ClosetDto.Post requestBody) {
+        // requestBody 데이터를 가지고 옷장(찜) 객체 생성
         Closet closet = mapper.closetPostToCloset(requestBody);
 
+        // 옷장 생성 서비스 처리 후 전송 할 수 있게 데이터 가공
         Closet createdCloset = closetService.createCloset(closet);
         ClosetDto.Response response = mapper.closetToClosetResponse(createdCloset);
 
+        // 클라이언트로 response
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response),
                 HttpStatus.CREATED);
@@ -58,6 +61,19 @@ public class ClosetController {
     @GetMapping(value = "/images/{closet-id}",
             produces={MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
     public ResponseEntity<byte[]> getClosetImage(@PathVariable("closet-id") @Positive int closetId) throws IOException {
+        Closet closet = closetService.findCloset(closetId);
+
+        byte[] image = closetService.pathToImage(closet.getCloth().getPath());
+
+        return new ResponseEntity<byte[]>(
+                image,
+                HttpStatus.OK);
+    }
+
+    // 옷장 누끼 이미지
+    @GetMapping(value = "/images/nukki/{closet-id}",
+            produces={MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+    public ResponseEntity<byte[]> getClosetNukkiImage(@PathVariable("closet-id") @Positive int closetId) throws IOException {
         Closet closet = closetService.findCloset(closetId);
 
         byte[] image = closetService.pathToImage(closet.getCloth().getPath_nukki());

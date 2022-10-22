@@ -19,6 +19,9 @@ public class Cloth {
     private String category;
 
     @Column(nullable = false, updatable = true, unique = false)
+    private String details;
+
+    @Column(nullable = false, updatable = true, unique = false)
     private String gender;
 
     @Column(nullable = false, updatable = true, unique = false)

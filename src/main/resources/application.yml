@@ -8,7 +8,8 @@ spring:
     url: jdbc:mysql://fashionboomer.ckamihij93ee.ap-northeast-2.rds.amazonaws.com:3306/fashionboomer?serverTimezone=Asia/Seoul
 #    username: ${DB_USERNAME}
 #    password: ${DB_PASSWORD}
-
+    username: root
+    password: root1234
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect

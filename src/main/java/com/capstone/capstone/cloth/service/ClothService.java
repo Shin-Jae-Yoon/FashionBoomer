@@ -5,11 +5,10 @@ import com.capstone.capstone.cloth.repository.ClothRepository;
 import com.capstone.capstone.exception.BusinessLogicException;
 import com.capstone.capstone.exception.ExceptionCode;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -43,6 +43,18 @@ public class ClothService {
     }
 
     @Transactional(readOnly = true)
+    public Page<Cloth> findClothesByCategoryAndDetail(String category, String detail, int page, int size) {
+        List<Cloth> clothList = clothRepository.findByCategoryAndDetails(category, detail).get();
+
+        Pageable pageable = PageRequest.of(page, size);
+        PagedListHolder pagedListHolder =  new PagedListHolder(clothList);
+        pagedListHolder.setPageSize(size);
+        pagedListHolder.setPage(page);
+
+        return new PageImpl<>(pagedListHolder.getPageList(), pageable, clothList.size());
+    }
+
+    @Transactional(readOnly = true)
     public Cloth findVerifiedCloth(int id) {
         Optional<Cloth> optionalCloth =
                 clothRepository.findById(id);
@@ -54,9 +66,9 @@ public class ClothService {
 
     @Transactional
     public byte[] pathToImage(String path) throws IOException {
-
+        // path에서 이미지 데이터 load
         InputStream imageStream = new FileInputStream(path);
-        System.out.println(path);
+        // 이미지 데이터를 바이트 배열로 인코딩
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
 
@@ -67,7 +79,6 @@ public class ClothService {
     public byte[] pathToImages(String path) throws IOException {
 
         InputStream imageStream = new FileInputStream(path);
-        System.out.println(path);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
 

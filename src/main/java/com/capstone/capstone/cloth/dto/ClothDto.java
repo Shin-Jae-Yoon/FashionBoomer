@@ -9,6 +9,7 @@ public class ClothDto {
     public static class Response {
         private int id;
         private String category;
+        private String details;
         private String gender;
         private String name;
         private String brand;

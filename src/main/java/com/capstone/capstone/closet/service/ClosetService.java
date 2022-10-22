@@ -8,6 +8,7 @@ import com.capstone.capstone.exception.ExceptionCode;
 import com.capstone.capstone.member.entity.Member;
 import com.capstone.capstone.member.service.MemberService;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,12 +36,16 @@ public class ClosetService {
     public Closet createCloset(Closet closet) {
         long member_id = closet.getMember().getMemberId();
         int cloth_id = closet.getCloth().getId();
+
+        // 유저나 옷의 id가 존재하지 않으면 옷장에 등록하지 않음
         if (!closetRepository.existsById(closet.getId())
                 && memberService.findVerifiedMember(member_id) != null
                 && clothService.findVerifiedCloth(cloth_id) != null) {
+            // 이미 옷장에 등록된 요청은 삭제 처리
             if (existsByMemberIdAndClothId(member_id, cloth_id)) {
                 deleteCloset(closet.getId());
             }
+            // 옷장에 옷 저장
             Closet savedCloset = closetRepository.save(closet);
             return savedCloset;
         }
@@ -66,8 +71,11 @@ public class ClosetService {
         List<Closet> closetList = closetRepository.findByMember_MemberId(id);
 
         Pageable pageable = PageRequest.of(page, size);
+        PagedListHolder pagedListHolder =  new PagedListHolder(closetList);
+        pagedListHolder.setPageSize(size);
+        pagedListHolder.setPage(page);
 
-        return new PageImpl<>(closetList, pageable, closetList.size());
+        return new PageImpl<>(pagedListHolder.getPageList(), pageable, closetList.size());
     }
 
     @Transactional

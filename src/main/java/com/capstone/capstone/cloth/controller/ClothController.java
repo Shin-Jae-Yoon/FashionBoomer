@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,8 +47,10 @@ public class ClothController {
 
     // cloth 이미지
     @GetMapping(value = "/images/{cloth-id}",
+            // http 통신으로 이미지 전송 가능하도록 설정
             produces={MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-    public ResponseEntity<byte[]> getClothImage(@PathVariable("cloth-id") @Positive int clothId) throws IOException {
+    public ResponseEntity<byte[]> getClothImage(
+            @PathVariable("cloth-id") @Positive int clothId) throws IOException {
         Cloth cloth = clothService.findCloth(clothId);
 
         byte[] image = clothService.pathToImage(cloth.getPath());
@@ -70,6 +73,20 @@ public class ClothController {
                 HttpStatus.OK);
     }
 
+    // clothes 카테고리 검색
+    @GetMapping("/list/{category}/{detail}")
+    public ResponseEntity getClothesDetail(@PathVariable("category") @NotBlank String category,
+                                           @PathVariable("detail") @NotBlank String detail,
+                                            @Positive @RequestParam int page,
+                                            @Positive @RequestParam int size) {
+        Page<Cloth> clothPage = clothService.findClothesByCategoryAndDetail(category, detail, page-1, size);
+        List<Cloth> clothes = clothPage.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(mapper.clothesToClothesResponses(clothes), clothPage),
+                HttpStatus.OK);
+    }
+
     // clothes 이미지
     @GetMapping(value = "/images",
             produces={MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
@@ -82,8 +99,6 @@ public class ClothController {
             String path = clothService.findCloth(start + i).getPath();
             images[i] = (clothService.pathToImage(path));
         }
-
-        System.out.println();
 
         return new ResponseEntity<>(
                 images,

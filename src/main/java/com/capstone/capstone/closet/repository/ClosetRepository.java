@@ -13,5 +13,6 @@ import java.util.Optional;
 @Repository
 public interface ClosetRepository extends JpaRepository<Closet, Integer> {
     List<Closet> findByMember_MemberId(long id);
+    // Select * from Closet where Member.memberId = member_id and Cloth.Id = cloth_id
     Optional<Closet> findByMember_MemberIdAndCloth_Id(long member_id, int cloth_id);
 }
