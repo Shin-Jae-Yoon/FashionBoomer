@@ -7,8 +7,10 @@ public enum ExceptionCode {
     MEMBER_EXISTS(409, "Member exists"),
     CLOTH_NOT_FOUND(404, "Cloth not found"),
     CLOTH_CODE_EXISTS(409, "Cloth Code exists"),
-    CLOSET_NOT_FOUND(404, "Cloth not found"),
-    CLOSET_CODE_EXISTS(409, "Cloth Code exists"),
+    CLOSET_NOT_FOUND(404, "Closet not found"),
+    CLOSET_CODE_EXISTS(409, "Closet Code exists"),
+    COMMENT_NOT_FOUND(404, "Comment not found"),
+    COMMENT_CODE_EXISTS(409, "Comment Code exists"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     INVALID_MEMBER_STATUS(400, "Invalid member status");
 
