@@ -59,11 +59,11 @@ public class CommentController {
     }
 
     // 옷 id로 검색
-    @GetMapping("/cloth/{cloth-id}")
+    @GetMapping("/cloths/{cloth-id}")
     public ResponseEntity getClothComments(@Positive @RequestParam int page,
                                            @Positive @RequestParam int size,
                                            @PathVariable("cloth-id") @Positive int clothId) {
-        Page<Comment> pageComments = commentService.findClothComments(clothId, page, size);
+        Page<Comment> pageComments = commentService.findClothComments(clothId, page-1, size);
         List<Comment> comments = pageComments.getContent();
 
         return new ResponseEntity<>(

@@ -45,7 +45,7 @@ public class CommentService {
     @Transactional
     public Comment updateComment(Comment comment) {
         Comment findComment = findVerifiedComment(comment.getId());
-
+        findComment.setComment(comment.getComment());
         return commentRepository.save(findComment);
     }
 

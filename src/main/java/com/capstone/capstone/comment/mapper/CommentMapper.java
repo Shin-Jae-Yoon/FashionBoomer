@@ -50,6 +50,7 @@ public interface CommentMapper {
         response.setId(comment.getId());
         response.setUser_id(comment.getMember().getMemberId());
         response.setCloth_id(comment.getCloth().getId());
+        response.setComment(comment.getComment());
 
         return response;
     }
