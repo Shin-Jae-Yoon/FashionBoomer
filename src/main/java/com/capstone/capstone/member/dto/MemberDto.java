@@ -5,6 +5,7 @@ import com.capstone.capstone.validator.NotSpace;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.*;
 
@@ -68,6 +69,15 @@ public class MemberDto {
 //            return memberStatus.getStatus();
 //        }
 //    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Post {
+        @Email
+        private String email;
+    }
     @AllArgsConstructor
     @Getter
     public static class Response {
