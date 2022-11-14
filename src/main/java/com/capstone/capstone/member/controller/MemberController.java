@@ -121,7 +121,19 @@ public class MemberController {
         Member savedMember = memberService.createMember(member);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.memberToMemberResponse(savedMember)), HttpStatus.OK
+                new SingleResponseDto<>(mapper.memberToMemberResponse(savedMember)), HttpStatus.CREATED
+        );
+    }
+
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(
+            @PathVariable("member-id") @Positive long memberId,
+            @Valid @RequestBody MemberDto.Patch requestBody) {
+        requestBody.setMemberId(memberId);
+        Member member = memberService.updateMember(mapper.memberPatchToMember(requestBody));
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.memberToMemberResponse(member)), HttpStatus.OK
         );
     }
 }

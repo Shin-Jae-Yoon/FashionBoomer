@@ -18,11 +18,14 @@ public class Member extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-//    @Column(length = 100, nullable = false)
-//    private String name;
+    @Column(length = 20)
+    private String name;
 
-    @Column(nullable = false, updatable = false, unique = true)
+    @Column(nullable = false, updatable = false, unique = false)
     private String email;
+
+    @Column(length = 20)
+    private String platform;
 
 //    @Column(length = 100, nullable = false)
 //    private String password;

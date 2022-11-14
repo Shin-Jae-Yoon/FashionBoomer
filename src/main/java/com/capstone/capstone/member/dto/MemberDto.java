@@ -77,11 +77,33 @@ public class MemberDto {
     public static class Post {
         @Email
         private String email;
+
+        private String name;
+
+        private String platform;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Patch {
+        private long memberId;
+
+        @Email
+        private String email;
+
+        private String name;
+
+        private String platform;
+    }
+
     @AllArgsConstructor
     @Getter
     public static class Response {
         private long memberId;
         private String email;
+        private String name;
+        private String platform;
     }
 }
