@@ -44,6 +44,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 //        google
         if(registrationId.equals("google")) {
             var oAuth2User = (OAuth2User)authentication.getPrincipal();
+//            System.out.println(oAuth2User.toString());
             String email = String.valueOf(oAuth2User.getAttributes().get("email"));
             List<String> authorities = authorityUtils.createRoles(email);           // CustomAuthorityUtils 를 이용해 권한 정보 생성
 
@@ -116,7 +117,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("fashionboomer")
+                .host("fashionboomer.tk")
 //                .port(80)
                 .path("/receive-token.html")
                 .queryParams(queryParams)
@@ -134,7 +135,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("fashionboomer")
+                .host("fashionboomer.tk")
 //                .port(80)
                 .path("/receive-token.html")
                 .queryParams(queryParams)

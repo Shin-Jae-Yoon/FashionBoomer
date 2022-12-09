@@ -105,12 +105,16 @@ public class MemberService {
             Member savedMember = memberRepository.save(member);
             return savedMember;
         }
-
-        return null;
+        Member savedMember = memberRepository.findByEmail(member.getEmail()).orElseThrow();
+        return savedMember;
     }
 
     public Member updateMember(Member member) {
         Member findMember = findVerifiedMember(member.getMemberId());
+
+        // 일단 이메일은 변경 불가
+        findMember.setName(member.getName());
+        findMember.setPlatform(member.getPlatform());
 
         return memberRepository.save(findMember);
     }

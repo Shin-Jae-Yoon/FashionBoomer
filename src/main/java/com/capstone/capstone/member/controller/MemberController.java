@@ -115,5 +115,25 @@ public class MemberController {
         this.mapper = mapper;
     }
 
-    // TODO OAuth 2 인증 환경에서는 회원 정보를 별도로 관리하지 않으므로, 회원 정보를 어떻게 로드할 것인가는 추가적인 논의가 필요
+    @PostMapping
+    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) {
+        Member member = mapper.memberPostToMember(requestBody);
+        Member savedMember = memberService.createMember(member);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.memberToMemberResponse(savedMember)), HttpStatus.CREATED
+        );
+    }
+
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(
+            @PathVariable("member-id") @Positive long memberId,
+            @Valid @RequestBody MemberDto.Patch requestBody) {
+        requestBody.setMemberId(memberId);
+        Member member = memberService.updateMember(mapper.memberPatchToMember(requestBody));
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.memberToMemberResponse(member)), HttpStatus.OK
+        );
+    }
 }
