@@ -4,6 +4,7 @@ import com.capstone.capstone.cloth.entity.Cloth;
 import com.capstone.capstone.comment.dto.CommentDto;
 import com.capstone.capstone.comment.entity.Comment;
 import com.capstone.capstone.member.entity.Member;
+import com.capstone.capstone.post.entity.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -14,13 +15,13 @@ public interface CommentMapper {
     default Comment commentPostToComment(CommentDto.Post requestBody) {
         Comment comment = new Comment();
         Member member = new Member();
-        Cloth cloth = new Cloth();
+        Post post = new Post();
 
         member.setMemberId(requestBody.getUser_id());
-        cloth.setId(requestBody.getCloth_id());
+        post.setId(requestBody.getPost_id());
 
         comment.setMember(member);
-        comment.setCloth(cloth);
+        comment.setPost(post);
         comment.setComment(requestBody.getComment());
 
         return comment;
@@ -29,14 +30,14 @@ public interface CommentMapper {
     default Comment commentPatchToComment(CommentDto.Patch requestBody) {
         Comment comment = new Comment();
         Member member = new Member();
-        Cloth cloth = new Cloth();
+        Post post = new Post();
 
         member.setMemberId(requestBody.getUser_id());
-        cloth.setId(requestBody.getCloth_id());
+        post.setId(requestBody.getPost_id());
 
         comment.setId(requestBody.getId());
         comment.setMember(member);
-        comment.setCloth(cloth);
+        comment.setPost(post);
         comment.setComment(requestBody.getComment());
 
         return comment;
@@ -49,8 +50,10 @@ public interface CommentMapper {
 
         response.setId(comment.getId());
         response.setUser_id(comment.getMember().getMemberId());
-        response.setCloth_id(comment.getCloth().getId());
+        response.setPost_id(comment.getPost().getId());
         response.setComment(comment.getComment());
+        response.setUser_name(comment.getMember().getName());
+        response.setCreated_at(comment.getCreatedAt().toString());
 
         return response;
     }

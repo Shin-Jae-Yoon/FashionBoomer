@@ -6,6 +6,8 @@ import com.capstone.capstone.comment.repository.CommentRepository;
 import com.capstone.capstone.exception.BusinessLogicException;
 import com.capstone.capstone.exception.ExceptionCode;
 import com.capstone.capstone.member.service.MemberService;
+import com.capstone.capstone.post.entity.Post;
+import com.capstone.capstone.post.service.PostService;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -21,20 +23,26 @@ public class CommentService {
     private final ClothService clothService;
     private final CommentRepository commentRepository;
 
-    public CommentService(MemberService memberService, ClothService clothService, CommentRepository commentRepository) {
+    private final PostService postService;
+
+    public CommentService(MemberService memberService, ClothService clothService, CommentRepository commentRepository, PostService postService) {
         this.memberService = memberService;
         this.clothService = clothService;
         this.commentRepository = commentRepository;
+        this.postService = postService;
     }
 
     @Transactional
     public Comment createComment(Comment comment) {
         long member_id = comment.getMember().getMemberId();
-        int cloth_id = comment.getCloth().getId();
+        int post_id = comment.getPost().getId();
 
         if (!commentRepository.existsById(comment.getId())) {
             // 댓글 작성
             Comment saveComment = commentRepository.save(comment);
+            Post post = postService.findPost(comment.getPost().getId());
+            post.setPostCommentCount(post.getPostCommentCount() + 1);
+            postService.updatePost(post);
             return saveComment;
         }
 
@@ -63,8 +71,8 @@ public class CommentService {
 
     // 특정 옷 전체 댓글 조회
     @Transactional
-    public Page<Comment> findClothComments(int clothId, int page, int size) {
-        List<Comment> commentList = commentRepository.findByCloth_Id(clothId);
+    public Page<Comment> findPostComments(int clothId, int page, int size) {
+        List<Comment> commentList = commentRepository.findByPost_Id(clothId);
 
         Pageable pageable = PageRequest.of(page, size);
         PagedListHolder pagedListHolder = new PagedListHolder(commentList);

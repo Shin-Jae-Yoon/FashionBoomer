@@ -42,6 +42,9 @@ public class ClothService {
                 Sort.by("id").descending()*/));
     }
 
+    /**
+     *  카테고리로 데이터 목록
+     */
     @Transactional(readOnly = true)
     public Page<Cloth> findClothesByCategoryAndDetail(String category, String detail, int page, int size) {
         List<Cloth> clothList = clothRepository.findByCategoryAndDetails(category, detail).get();
@@ -52,6 +55,20 @@ public class ClothService {
         pagedListHolder.setPage(page);
 
         return new PageImpl<>(pagedListHolder.getPageList(), pageable, clothList.size());
+    }
+
+    /**
+     *  카테고리, 디테일, id로 하나의 데이터만
+     */
+    @Transactional(readOnly = true)
+    public Cloth findClothByCategoryAndDetailAndId(String category, String detail, int id) {
+        String pathLike = "/" + id + ".";
+        Optional<Cloth> optionalCloth =
+                clothRepository.findByCategoryAndDetailsAndPathContaining(category, detail, pathLike);
+        Cloth findCloth =
+                optionalCloth.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.CLOTH_NOT_FOUND));
+        return findCloth;
     }
 
     @Transactional(readOnly = true)

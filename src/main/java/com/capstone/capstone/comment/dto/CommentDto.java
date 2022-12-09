@@ -18,7 +18,7 @@ public class CommentDto {
         private Long user_id;
 
         @Positive
-        private int cloth_id;
+        private int post_id;
 
         @NotBlank
         private String comment;
@@ -35,7 +35,7 @@ public class CommentDto {
         private Long user_id;
 
         @Positive
-        private int cloth_id;
+        private int post_id;
 
         @NotBlank
         private String comment;
@@ -48,7 +48,9 @@ public class CommentDto {
     public static class Response {
         private int id;
         private Long user_id;
-        private int cloth_id;
+        private int post_id;
         private String comment;
+        private String user_name;
+        private String created_at;
     }
 }

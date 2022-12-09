@@ -60,6 +60,23 @@ public class ClothController {
                 HttpStatus.OK);
     }
 
+    // cloth 카테고리로 이미지
+    @GetMapping(value = "/images/{category}/{detail}/{cloth-id}",
+            // http 통신으로 이미지 전송 가능하도록 설정
+            produces={MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+    public ResponseEntity<byte[]> getClothImage(
+            @PathVariable("category") @NotBlank String category,
+            @PathVariable("detail") @NotBlank String detail,
+            @PathVariable("cloth-id") @Positive int clothId) throws IOException {
+        Cloth cloth = clothService.findClothByCategoryAndDetailAndId(category, detail, clothId);
+
+        byte[] image = clothService.pathToImage(cloth.getPath());
+
+        return new ResponseEntity<byte[]>(
+                image,
+                HttpStatus.OK);
+    }
+
     // clothes 정보
     @GetMapping
     public ResponseEntity getClothes(@Positive @RequestParam int page,
